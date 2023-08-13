@@ -1,0 +1,136 @@
+<div class="border-bottom border-dark text-dark p-2 fs-5 mb-4">Comments</div>
+<% if (comments.length===0) { %>
+  <p class="text-center text-dark fs-5">No comments yet.</p>
+  <% } else { %>
+    <% comments.forEach((comment)=> { %>
+      <div class="d-flex flex-wrap border-bottom border-dark pb-2 mb-2">
+        <div class="comment-content col-12 col-md-12 col-lg-12">
+          <div class="comment-author d-flex align-items-center mb-2">
+            <img src="/images/userprof.jpg" class="comment-userprof flex-shrink-0 rounded-circle shadow"
+              alt="user image" />
+            <% if (comment.userId && comment.userId.userName) { %>
+              <h6 class="fs-6 m-3">
+                <%= comment.userId.userName %><br />
+                  <span class="comment-time text-secondary">
+                    <%= comment.updatedAt.toLocaleString("en-US", { month: "long" , day: "numeric" , year: "numeric" ,
+                      hour: "numeric" , minute: "numeric" , hour12: true, }) %>
+                  </span>
+              </h6>
+              <% } else { %>
+                <h6 class="fs-6 m-3">
+                  Unknown User<br />
+                  <span class="comment-time text-secondary fa-xs">
+                    <%= comment.updatedAt.toLocaleString("en-US", { month: "long" , day: "numeric" , year: "numeric" ,
+                      hour: "numeric" , minute: "numeric" , hour12: true, })%>
+                  </span>
+                </h6>
+                <% } %>
+          </div>
+          <div>
+            <form method="POST" action="/comments/edit/<%= videoId %>/<%= comment._id %>">
+              <textarea class="comment-text border-none mb-2 fs-6 col-12 p-2" name="comment"
+                id="comment-<%= comment._id %>" disabled><%= comment.comment %></textarea>
+              <% if (typeof commentError !=='undefined' && commentError[comment._id]) { %>
+                <span class="error text-danger">
+                  <%= commentError[comment._id] %>
+                </span>
+                <% } %>
+                  <div class="d-inline-flex comment-buttons btn-group btn-group-sm" role="group">
+                    <button type="submit" id="save-editing-<%= comment._id %>" class="save-editing btn">
+                      <i class="fas fa-save"></i>
+                    </button>
+                    <button type="button" id="cancel-editing-<%= comment._id %>" class="cancel-editing btn">
+                      <i class="fas fa-times"></i>
+                    </button>
+                    <button class="edit-buttonn btn" id="edit-buttonn-<%= comment._id %>" type="button"
+                      data-comment-id="<%= comment._id %>">
+                      <i class="fas fa-edit fa-sm"></i>
+                    </button>
+            </form>
+            <form action="/comments/delete/<%= videoId %>/<%= comment._id %>?_method=DELETE" method="POST"
+              class="d-inline">
+              <button class="btn delete-button" type="submit">
+                <i class="fas fa-trash-alt fa-sm"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      </div>
+      <% }) %>
+        <% } %>
+          <div class="d-flex flex-wrap border-bottom border-dark pb-3 mb-3">
+            <img src="/images/userprof.jpg" class="comment-userprof flex-shrink-0 rounded-circle shadow m-3"
+              alt="user image" />
+            <div class="comment-content flex-grow-1 m-2">
+              <% if (userLoggedIn) { %>
+                <form action="/comments/create/<%= videoId %>" method="POST">
+                  <div class="form-floating">
+                    <textarea class="w-100 add-comment mt-2 p-2" placeholder="Leave a comment here"
+                      id="floatingTextarea" name="comment"></textarea>
+                    <% if (typeof AddErrorMessage !=='undefined' ) { %>
+                      <span class="error text-danger">
+                        <%= AddErrorMessage %>
+                      </span>
+                      <% } %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-comment-btn">
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="save-comment-btn">
+                      <i class="fas fa-plus"></i> Add Comment
+                    </button>
+                  </div>
+                </form>
+                <% } else { %>
+                  <div class="modal-body">
+                    <span class="error">You need to log in to add a comment</span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-comment-btn">
+                      Cancel
+                    </button>
+                    <a type="submit" class="btn btn-primary" id="login-comment-btn" href="/login">
+                      Log in
+                    </a>
+                  </div>
+                  <% } %>
+            </div>
+          </div>
+          <script>
+            const editButtonns = document.querySelectorAll('.edit-buttonn');
+            editButtonns.forEach(editButtonn => {
+              const commentId = editButtonn.dataset.commentId;
+              const commentTextArea = document.getElementById(`comment-${commentId}`);
+              const saveButton = document.getElementById(`save-editing-${commentId}`);
+              const cancelButton = document.getElementById(`cancel-editing-${commentId}`);
+              editButtonn.addEventListener('click', () => {
+                saveButton.style.display = 'inline-block';
+                cancelButton.style.display = 'inline-block';
+                editButtonn.style.display = 'none';
+                commentTextArea.style.backgroundColor = '#DDDDDD';
+                commentTextArea.removeAttribute('disabled');
+              });
+
+              cancelButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                saveButton.style.display = 'none';
+                cancelButton.style.display = 'none';
+                editButtonn.style.display = 'inline-block';
+                commentTextArea.style.backgroundColor = 'transparent';
+                commentTextArea.setAttribute('disabled', true);
+              });
+            });
+
+            const comment = document.getElementsByTagName("textarea");
+            for (let i = 0; i < comment.length; i++) {
+              comment[i].style.height = "auto";
+              comment[i].style.height = (comment[i].scrollHeight) + "px";
+              comment[i].addEventListener("input", OnInput, false);
+            }
+            function OnInput() {
+              this.style.height = "auto";
+              this.style.height = (this.scrollHeight) + "px";
+            }
+          </script>

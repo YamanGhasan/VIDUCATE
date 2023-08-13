@@ -1,0 +1,13 @@
+<form action="/video/<%= videoId %>/clap" method="POST">
+    <% if (clapped) { %>
+        <button type="submit" name="clapButton" class="clapButton">
+            <i class="fa-solid fa-hands-clapping fa-beat-fade" style="color: #f5e000;"></i>
+            <span>claping</span>
+        </button>
+        <% } else { %>
+            <button type="submit" name="clapButton"class="clapButton">
+                <i class="fa fa-hands-clapping" style="color: #f5e000;"></i>
+                <span>clap</span>
+            </button>
+            <% } %>
+</form>

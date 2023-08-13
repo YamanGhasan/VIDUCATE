@@ -1,0 +1,18 @@
+  <% if (typeof messages !=='undefined' && messages.length> 0) { %>
+    <% messages.forEach(function(message) { %>
+      <div class="message">
+        <div class="user-info">
+          <img src="<%= message.userImage %>" alt="<%= message.userName %>">
+          <h4>
+            <%= message.userName %>
+          </h4>
+          <span class="time">
+            <%= message.time %>
+          </span>
+        </div>
+        <p>
+          <%= message.message %>
+        </p>
+      </div>
+      <% }); %>
+        <% } %>

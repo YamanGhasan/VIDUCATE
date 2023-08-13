@@ -1,0 +1,28 @@
+<div class="top-category section-padding mb-4">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="main-title">
+        <% include('../Dropdown/Dropdown.ejs', { menuType: '' }) %>
+        <h6>Channels Categories</h6>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="owl-carousel owl-carousel-category owl-theme d-block opacity-25">
+        <div class="owl-wrapper-outer">
+          <div class="owl-wrapper">
+            <% channelsCategories.forEach(category => { %>
+            <div class="owl-item text-center">
+              <div class="item">
+                <div class="category-item">
+                    <img class="img-fluid" src="/images/categories/<%= category.categoryImage %>" alt="<%= category.name %>"/>
+                    <h6><%= category.name %></h6>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

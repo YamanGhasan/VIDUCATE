@@ -1,0 +1,33 @@
+ 
+<%- include('./layouts/sMainLayout', {title: "Category", css: ["/css/category.css"] }) %>
+        <div class="categoryTable" >
+       <h2>Categories</h2>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" class="category_th">Title</th>
+        <th scope="col" class="category_th">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <%categoryList.forEach(category=> { %>
+       <tr>
+      
+        <th class="category_th"><%=category.name%></th>
+      
+        <td class="category_td"><%=category.description%>  
+          <div class="categorybuttons"> 
+            <a class="btn btn-dark" href="/delete/<%=category.id%>">Delete</a>
+            <a class="btn  btn-dark" href="/update/<%=category.id%>">Edit</a></div> </td>
+      
+      </tr>
+            <%})%>
+   
+    </tbody>
+  </table>
+  <a href="/categories/create" class="btn  btn-dark">Create Category</a>
+ </div>
+
+  <%- include('./layouts/eMainLayout',{js: ["../controllers/categoryController"]}) %>
+ 

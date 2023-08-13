@@ -1,0 +1,7 @@
+<% if(typeof js !== 'undefined') { %>
+  <% if(Array.isArray(js)) {%>
+    <% js.forEach((file) => { %>
+      <script src="<%= file %>"></script>  
+    <% }) %>
+  <% } else { throw new Error('you maust pass array of strings holding files paths')} %>
+<% } %>

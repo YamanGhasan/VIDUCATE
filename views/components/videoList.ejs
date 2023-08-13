@@ -1,0 +1,19 @@
+<% currentVideos.forEach(function(video) { %>
+<tr>
+  <td>
+    <img
+      src="/images/<%= video.videoImagePath %>"
+      alt=""
+      style="max-width: 300px; max-height: 200px"
+    />
+  </td>
+  <td><%= video.title %></td>
+  <td><%= video.description %></td>
+  <td><%= video.category.name %></td>
+  <td><%= video.status %></td>
+  <% if (video.adminPreview) { %> <% if (video.adminPreview.adminDecision) { %>
+  <td>Accepted</td>
+  <% } else { %>
+  <td>Rejected</td>
+  <% } %>
+</tr> <% }; %> <% }); %>

@@ -1,0 +1,356 @@
+<div class="text-right mb-2">
+  <div class="btn-group" role="group">
+    <button id="add-note-btn" class="btn btn-transparent" data-toggle="modal" data-target="#noteModal">
+      <i class="fas fa-plus-circle"></i>
+    </button>
+    <div class="toggle-button">
+      <button id="toggleButton" class="btn btn-transparent" onclick="toggleTable()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sticky-fill"
+          viewBox="0 0 16 16">
+          <path
+            d="M2.5 1A1.5 1.5 0 0 0 1 2.5v11A1.5 1.5 0 0 0 2.5 15h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 15 8.586V2.5A1.5 1.5 0 0 0 13.5 1h-11zm6 8.5a1 1 0 0 1 1-1h4.396a.25.25 0 0 1 .177.427l-5.146 5.146a.25.25 0 0 1-.427-.177V9.5z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+<% if (userLoggedIn && notes.length> 0) { %>
+  <div class="row m-1 rounded">
+    <div id="table-wrapper" class="table-wrapper table-responsive" style="display: none">
+      <table class="table box">
+        <thead>
+          <tr>
+            <th>Note Time</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% notes.forEach((note)=> { %>
+            <tr id="noteRow-<%= note._id %>">
+              <td class="col-2">
+                <%= Math.floor(note.time) %>:00
+                  <button class="btn btn-transparent" onclick="seekToTime('<%= note.time %>')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-play-btn" viewBox="0 0 16 16">
+                      <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
+                      <path
+                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                    </svg>
+                  </button>
+              </td>
+              <td class="col-3" id="note-title-<%= note._id %>">
+                <%= note.title %>
+              </td>
+              <td class="col-4" id="note-content-<%= note._id %>">
+                <%= note.content %>
+              </td>
+              <td>
+                <button class="btn btn-transparent" onclick="deleteNote('<%= note._id %>')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                  </svg>
+                </button>
+                <button class="btn btn-transparent btn-edit" data-note-id="<%= note._id %>">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path
+                      d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                    <path fill-rule="evenodd"
+                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                  </svg>
+                </button>
+                <button class="btn btn-transparent btn-save" id="save-editing-<%= note._id %>" style="display: none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                  </svg>
+                </button>
+                <button class="btn btn-transparent btn-cancel" id="cancel-editing-<%= note._id %>"
+                  style="display: none">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <% } %>
+    <div id="noteModal" class="modal fade note-modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Note</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% if (userLoggedIn) { %>
+            <form id="note-form" action="/saveNote/<%= videoId %>" method="POST">
+              <input type="hidden" id="note-time" name="time" value="" />
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="note-title col-form-label">Note Title:</label>
+                  <input type="text" class="form-control" id="note-title" name="title" />
+                </div>
+                <div class="form-group">
+                  <label for="note-text">Note:</label>
+                  <textarea class="form-control h-100" id="note-text" name="note"></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-transparent" data-dismiss="modal" id="cancel-note-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                  </svg>
+                </button>
+                <button type="submit" class="btn btn-transparent" id="save-note-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                    <path
+                      d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <% } else { %>
+              <div class="modal-body">
+                <span class="error">You need to log in to add a note</span>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancel-note-btn">
+                  Cancel
+                </button>
+                <a type="submit" class="btn btn-primary" id="save-note-btn" href="/login">
+                  Log in
+                </a>
+              </div>
+              <% } %>
+        </div>
+      </div>
+    </div>
+    <script>
+      const videoPlayer = document.querySelector(".single-video video");
+      let currentNoteMarker = null;
+
+      function toggleTable() {
+        var tableWrapper = document.getElementById("table-wrapper");
+        var toggleButton = document.getElementById("toggleButton");
+        if (tableWrapper.style.display === "none") {
+          tableWrapper.style.display = "block";
+          toggleButton.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sticky" viewBox="0 0 16 16"><path d="M2.5 1A1.5 1.5 0 0 0 1 2.5v11A1.5 1.5 0 0 0 2.5 15h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 15 8.586V2.5A1.5 1.5 0 0 0 13.5 1h-11zM2 2.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V8H9.5A1.5 1.5 0 0 0 8 9.5V14H2.5a.5.5 0 0 1-.5-.5v-11zm7 11.293V9.5a.5.5 0 0 1 .5-.5h4.293L9 13.793z"/></svg>';
+        } else {
+          tableWrapper.style.display = "none";
+          toggleButton.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sticky-fill" viewBox="0 0 16 16"><path d="M2.5 1A1.5 1.5 0 0 0 1 2.5v11A1.5 1.5 0 0 0 2.5 15h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 15 8.586V2.5A1.5 1.5 0 0 0 13.5 1h-11zm6 8.5a1 1 0 0 1 1-1h4.396a.25.25 0 0 1 .177.427l-5.146 5.146a.25.25 0 0 1-.427-.177V9.5z"/></svg>';
+        }
+      }
+      document
+        .getElementById("note-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          videoPlayer.pause();
+          const title = document.getElementById("note-title").value;
+          const time = document.getElementById("note-time").value;
+          const note = document.getElementById("note-text").value;
+          const requestBody = {
+            title: title,
+            time: time,
+            note: note,
+          };
+          saveNote(requestBody);
+        });
+      function deleteNote(noteId) {
+        fetch(`/deleteNote/${noteId}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              var noteRow = document.getElementById(`noteRow-${noteId}`);
+              noteRow.remove();
+            } else {
+              console.error("Failed to delete note:", data.error);
+            }
+          })
+          .catch((error) => {
+            console.error("Failed to delete note:", error);
+          });
+      }
+      function saveNote(requestBody) {
+        const videoId = "<%= videoId %>";
+        fetch(`/saveNote/${videoId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              console.log("Note saved successfully");
+              videoPlayer.play();
+              document.getElementById("note-title").value = "";
+              document.getElementById("note-text").value = "";
+              const noteModal = document.getElementById("noteModal");
+              noteModal.classList.remove("show");
+              noteModal.setAttribute("aria-hidden", "true");
+              noteModal.style.display = "none";
+              document.body.classList.remove("modal-open");
+              const modalBackdrop = document.querySelector(".modal-backdrop");
+              modalBackdrop.parentNode.removeChild(modalBackdrop);
+            } else {
+              console.error("Failed to save note");
+            }
+          })
+          .catch((error) => {
+            console.error("Error saving note:", error);
+          });
+      }
+
+      const editButtons = document.querySelectorAll(".btn-edit");
+      editButtons.forEach((editButton) => {
+        const noteId = editButton.dataset.noteId;
+        const noteContent = document.getElementById(`note-content-${noteId}`);
+        const noteTitle = document.getElementById(`note-title-${noteId}`);
+        const saveButton = document.getElementById(`save-editing-${noteId}`);
+        const cancelButton = document.getElementById(`cancel-editing-${noteId}`);
+        const originalNoteContent = noteContent.innerHTML;
+        const originalNoteTitle = noteTitle.innerHTML;
+
+        editButton.addEventListener("click", () => {
+          saveButton.style.display = "inline-block";
+          cancelButton.style.display = "inline-block";
+          editButton.style.display = "none";
+          noteContent.contentEditable = true;
+          noteTitle.contentEditable = true;
+          noteContent.style.backgroundColor = "#DDDDDD";
+          noteTitle.style.backgroundColor = "#DDDDDD";
+        });
+
+        saveButton.addEventListener("click", () => {
+          const updatedNoteContent = noteContent.innerHTML;
+          const updatedNoteTitle = noteTitle.innerHTML;
+          fetch(`/updateNote/${noteId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: updatedNoteTitle,
+              content: updatedNoteContent,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+          saveButton.style.display = "none";
+          cancelButton.style.display = "none";
+          editButton.style.display = "inline-block";
+          noteContent.contentEditable = false;
+          noteTitle.contentEditable = false;
+          noteContent.style.backgroundColor = "";
+          noteTitle.style.backgroundColor = "";
+        });
+
+        cancelButton.addEventListener("click", () => {
+          noteContent.innerHTML = originalNoteContent;
+          noteTitle.innerHTML = originalNoteTitle;
+          saveButton.style.display = "none";
+          cancelButton.style.display = "none";
+          editButton.style.display = "inline-block";
+          noteContent.contentEditable = false;
+          noteTitle.contentEditable = false;
+          noteContent.style.backgroundColor = "";
+          noteTitle.style.backgroundColor = "";
+        });
+      });
+
+      document
+        .getElementById("cancel-note-btn")
+        .addEventListener("click", function () {
+          videoPlayer.play();
+        });
+
+      document
+        .getElementById("add-note-btn")
+        .addEventListener("click", function () {
+          videoPlayer.pause();
+          var currentTime = videoPlayer.currentTime;
+          document.getElementById("note-time").value = currentTime.toFixed(2);
+        });
+
+      function displayNotesOnTimeline() {
+        const timelineContainer = document.getElementById("timeline-container");
+        const videoId = "<%= videoId %>";
+        timelineContainer.innerHTML = "";
+        fetch(`/getNotes/${videoId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            data.notes.forEach((note) => {
+              const marker = document.createElement("div");
+              const markerPosition = (note.time / videoPlayer.duration) * 100;
+              marker.style.left = `${markerPosition}%`;
+              marker.addEventListener("click", () => {
+                displayNoteContent(note.content);
+              });
+              marker.addEventListener("click", () => {
+                seekToTime(note.time);
+              });
+              videoPlayer.addEventListener("timeupdate", () => {
+                if (videoPlayer.currentTime >= note.time && !marker.classList.contains("note-marker")) {
+                  if (currentNoteMarker) {
+                    timelineContainer.removeChild(currentNoteMarker);
+                    currentNoteMarker = null;
+
+                  }
+                  marker.classList.add("note-marker");
+                  timelineContainer.appendChild(marker);
+                  currentNoteMarker = marker;
+                }
+              });
+
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching notes:", error);
+          });
+      }
+
+      function displayNoteContent(content) {
+        const noteContent = document.createElement("div");
+        noteContent.classList.add("note-content");
+        noteContent.textContent = content;
+        timelineContainer.appendChild(noteContent);
+        videoPlayer.pause();
+        setTimeout(() => {
+          timelineContainer.removeChild(noteContent);
+          videoPlayer.play();
+        }, 5000);
+      }
+
+      function seekToTime(time) {
+        videoPlayer.currentTime = time;
+      }
+
+      displayNotesOnTimeline();
+    </script>

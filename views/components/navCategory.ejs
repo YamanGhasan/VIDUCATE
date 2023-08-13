@@ -1,0 +1,16 @@
+
+
+
+<li class="nav-item">
+    <a class="nav-link" href="<%= href %>">
+        <i class="<%= icon %>"></i>
+        <span><%= sideValue %></span>
+        <select class="nav-item" >
+            <% categories.forEach((category) => { %>
+              <option value="<%= category._id %>"><%= category.name %></option>
+            <% }) %>
+          </select>
+    </a>
+  </li>
+
+

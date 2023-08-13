@@ -1,0 +1,35 @@
+<%- include('../layouts/sMainLayout', {title: 'Create Questions'}) %>
+
+<div class="container-fluid pb-0">
+  <div class="video-block section-padding">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="single-video-left">
+            <div class="single-video">
+              
+              <h1><%= video.title%></h1>
+
+              <%- include('../components/pureVideoPlayer'); %>
+
+              <div class="row">
+                <div class="col-md-10">
+                  <h2>Add Questions</h2>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-primary" id="add-question-button">+</button>
+                </div>
+              </div>
+
+              <form class="row" id="questions-container" method="POST" action="/video/<%= video._id %>/questions/create">
+
+              </form>
+
+              <button onclick="createQuestions()">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<%- include('../layouts/eMainLayout', {js: ['/js/realTimeQuestionsFormsHandler.js']}) %>
+ 

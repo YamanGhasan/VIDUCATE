@@ -1,0 +1,11 @@
+<div class="single-video-title box mb-3">
+    <h2><a href="#">
+            <%= video.title %>
+        </a>
+    </h2>
+    <p class="mb-0"><i class="fas fa-eye"></i>
+        <%= video.views %> views
+    </p>
+    <%- include('./videoNotes.ejs', { videoId: video._id }); %>
+        <%- include('./clapAction.ejs',{ clapped:clapped}); %>
+</div>

@@ -1,0 +1,47 @@
+{
+  "name": "video-stream",
+  "version": "1.0.0",
+  "description": "Final project for Team Project 2 Course - CAP Department - NNU",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js --ignore 'factories/*.js'",
+    "factories": "node factories/dataBaseFactory.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aux-sam/video-stream.git"
+  },
+  "author": "Samer Huwari - Auxilium Technology",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aux-sam/video-stream/issues"
+  },
+  "homepage": "https://github.com/aux-sam/video-stream#readme",
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.7.0",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.15.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "google-recaptcha-api": "^1.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "mongoose": "^6.10.5",
+    "multer": "^1.4.5-lts.1",
+    "node-input-validator": "^4.5.1",
+    "nodemailer": "^6.9.1",
+    "socket.io": "^4.6.1",
+    "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "node-sass": "^8.0.0",
+    "nodemon": "^2.0.22"
+  }
+}

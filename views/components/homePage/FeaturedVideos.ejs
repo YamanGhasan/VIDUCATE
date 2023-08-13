@@ -1,0 +1,48 @@
+<hr>
+<div class="video-block section-padding">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="main-title">
+                <%- include('../Dropdown/Dropdown.ejs',{menuType: 'sorting' })%>
+                    <h6>Featured Videos</h6>
+            </div>
+        </div>
+        <% for (var i=0; i < featuredVideos.length; i++){ %>
+            <div class="col-xl-3 col-sm-6 mb-3">
+                <div class="video-card h-100">
+                    <div class="video-card-image">
+                        <a class="play-icon" href="<%= `${APP_URL}/video/${featuredVideos[i]._id}` %>"><i class="fas fa-play-circle"></i></a>
+                        <a href="<%= `${APP_URL}/video/${featuredVideos[i]._id}` %>">
+                            <img class="img-fluid" src="/images/<%= featuredVideos[i].videoImagePath %>"
+                                alt="<%= featuredVideos[i].title %>"></a>
+                        <div class="time">
+                            2:00 <!-- static 2 minutes -->
+                        </div>
+                    </div>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="<%= `${APP_URL}/video/${featuredVideos[i]._id}` %>">
+                                <%= featuredVideos[i].title %>
+                            </a>
+                        </div>
+                        <div class="video-page text-success">
+                            <!-- assuming your 'status' field maps to success/danger in the UI -->
+                            <% if (featuredVideos[i].category) { %>
+                                <%= featuredVideos[i].category.name %> <a title="" data-placement="top"
+                                        data-toggle="tooltip" href="#"
+                                        data-original-title="<%= featuredVideos[i].videoVerification %>">
+                                        <% } %>
+                                            <i
+                                                class="fas <%= featuredVideos[i].isFree ? 'fa-check-circle text-success' : 'fa-frown text-danger' %>"></i>
+                                    </a>
+                        </div>
+                        <div class="video-view">
+                            <%= featuredVideos[i].views %> views &nbsp;<i class="fas fa-calendar-alt"></i>
+                                <%= featuredVideos[i].age %> <!-- using ageCalculator result from the model -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% }; %>
+    </div>
+</div>

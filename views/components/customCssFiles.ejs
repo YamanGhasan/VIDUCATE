@@ -1,0 +1,7 @@
+<% if(typeof css !== 'undefined') { %>
+  <% if(Array.isArray(css)) {%>
+    <% css.forEach((file) => { %>
+      <link rel="stylesheet" href="<%= file %>">  
+    <% }) %>
+  <% } else { throw new Error('you maust pass array of strings holding files paths')} %>
+<% } %>
