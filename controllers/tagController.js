@@ -20,12 +20,12 @@ const createTag = async (req, res) => {
 };
 
 // Edit tag
-const editTag = async (req, res) => {
-  var element = {
+const editTag = async (req, res) => {  
+  var element = { // read it from the frontend to pass it to the backend 
     name: req.body.name,
     description: req.body.description,
   };
-  Tag.findByIdAndUpdate(req.params.id, { $set: element }, function (err, data) {
+  Tag.findByIdAndUpdate(req.params.id, { $set: element }, function (err, data) {  
     if (err) {
       console.log(err);
     } else {
@@ -55,7 +55,7 @@ const deleteTag = async (req, res) => {
 };
 
 Tag.getAll = async function () {
-  return await this.find({}, 'name').lean();
+  return await this.find({}, 'name').lean();  
 };
 
 module.exports = {
